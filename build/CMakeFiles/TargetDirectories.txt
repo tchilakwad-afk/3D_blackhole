@@ -1,0 +1,3 @@
+/home/tchilakwad/3D_blackhole/build/CMakeFiles/OpenGLProject.dir
+/home/tchilakwad/3D_blackhole/build/CMakeFiles/edit_cache.dir
+/home/tchilakwad/3D_blackhole/build/CMakeFiles/rebuild_cache.dir
