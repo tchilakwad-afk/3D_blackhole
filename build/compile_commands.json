@@ -1,19 +1,19 @@
 [
 {
   "directory": "/home/tchilakwad/3D_blackhole/build",
-  "command": "/usr/bin/g++ -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -g -std=gnu++17 -o CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o -c /home/tchilakwad/3D_blackhole/src/display-objects.cpp",
+  "command": "/usr/bin/c++ -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -std=gnu++17 -o CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o -c /home/tchilakwad/3D_blackhole/src/display-objects.cpp",
   "file": "/home/tchilakwad/3D_blackhole/src/display-objects.cpp",
   "output": "CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o"
 },
 {
   "directory": "/home/tchilakwad/3D_blackhole/build",
-  "command": "/usr/bin/gcc -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -g -o CMakeFiles/OpenGLProject.dir/src/glad.c.o -c /home/tchilakwad/3D_blackhole/src/glad.c",
+  "command": "/usr/bin/cc -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include  -o CMakeFiles/OpenGLProject.dir/src/glad.c.o -c /home/tchilakwad/3D_blackhole/src/glad.c",
   "file": "/home/tchilakwad/3D_blackhole/src/glad.c",
   "output": "CMakeFiles/OpenGLProject.dir/src/glad.c.o"
 },
 {
   "directory": "/home/tchilakwad/3D_blackhole/build",
-  "command": "/usr/bin/g++ -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -g -std=gnu++17 -o CMakeFiles/OpenGLProject.dir/src/main.cpp.o -c /home/tchilakwad/3D_blackhole/src/main.cpp",
+  "command": "/usr/bin/c++ -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -std=gnu++17 -o CMakeFiles/OpenGLProject.dir/src/main.cpp.o -c /home/tchilakwad/3D_blackhole/src/main.cpp",
   "file": "/home/tchilakwad/3D_blackhole/src/main.cpp",
   "output": "CMakeFiles/OpenGLProject.dir/src/main.cpp.o"
 }

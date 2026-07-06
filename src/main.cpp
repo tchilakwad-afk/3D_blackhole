@@ -16,6 +16,9 @@ using namespace std;
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void renderQuad();
 
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
 int main(int argc, char* argv[]){
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -48,8 +51,8 @@ int main(int argc, char* argv[]){
 
     glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &max_compute_work_group_invocations);
 
-    Shader screenQuad("screenQuad.vs", "screenQuad.fs");
-    ComputeShader computeShader("computeShader.cs");
+    Shader screenQuad((string)(SHADER_DIR) + "screenQuad.vs", (string)(SHADER_DIR) + "screenQuad.fs");
+    ComputeShader computeShader((string)(SHADER_DIR) + "computeShader.cs");
 
     screenQuad.use();
     screenQuad.setInt("tex", 0);
