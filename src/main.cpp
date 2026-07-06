@@ -48,8 +48,8 @@ int main(int argc, char* argv[]){
 
     glGetIntegerv(GL_MAX_COMPUTE_WORK_GROUP_INVOCATIONS, &max_compute_work_group_invocations);
 
-    GraphicsShaders screenQuad("screenQuad.vs", "screenQuad.fs");
-    ComputeShaders computeShader("computeShader.cs");
+    Shader screenQuad("screenQuad.vs", "screenQuad.fs");
+    ComputeShader computeShader("computeShader.cs");
 
     screenQuad.use();
     screenQuad.setInt("tex", 0);

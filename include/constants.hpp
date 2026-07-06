@@ -6,9 +6,6 @@ constexpr unsigned int SCREEN_HEIGHT = 600;
 const unsigned int TEXTURE_WIDTH = 1000;
 const unsigned int TEXTURE_HEIGHT = 1000;
 
-float deltaTime = 0.0f;
-float lastFrame = 0.0f;
-
 constexpr float PI = 3.14159265358979323846f;
 constexpr float SCROLL_SENSITIVITY = 0.1f;
 constexpr float ROTATION_SENSITIVITY = 0.0015f;
