@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.16)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 project(OpenGLProject)
 
@@ -6,8 +6,7 @@ set(CMAKE_CXX_STANDARD 17)
 
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/glad.c")
 
-add_executable(${PROJECT_NAME} ${SOURCES}
-    src/main.cpp)
+add_executable(${PROJECT_NAME} ${SOURCES})
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.3 REQUIRED)
@@ -17,7 +16,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE
     MODEL_DIR="${CMAKE_SOURCE_DIR}/resources/models/"
 )
 target_include_directories(${PROJECT_NAME} PRIVATE
-    include/   
+    include   
 )
 
 find_package(glm REQUIRED)
