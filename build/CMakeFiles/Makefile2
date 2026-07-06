@@ -81,12 +81,12 @@ clean: CMakeFiles/OpenGLProject.dir/clean
 CMakeFiles/OpenGLProject.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLProject.dir/build.make CMakeFiles/OpenGLProject.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLProject.dir/build.make CMakeFiles/OpenGLProject.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/tchilakwad/3D_blackhole/build/CMakeFiles --progress-num=1,2 "Built target OpenGLProject"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/tchilakwad/3D_blackhole/build/CMakeFiles --progress-num=1,2,3 "Built target OpenGLProject"
 .PHONY : CMakeFiles/OpenGLProject.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/OpenGLProject.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/tchilakwad/3D_blackhole/build/CMakeFiles 2
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/tchilakwad/3D_blackhole/build/CMakeFiles 3
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/OpenGLProject.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/tchilakwad/3D_blackhole/build/CMakeFiles 0
 .PHONY : CMakeFiles/OpenGLProject.dir/rule

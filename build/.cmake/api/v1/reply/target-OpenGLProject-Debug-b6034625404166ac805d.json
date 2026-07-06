@@ -40,13 +40,13 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 25,
+				"line" : 26,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 11,
+				"line" : 12,
 				"parent" : 0
 			},
 			{
@@ -68,7 +68,7 @@
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 23,
+				"line" : 24,
 				"parent" : 0
 			},
 			{
@@ -94,13 +94,13 @@
 			{
 				"command" : 6,
 				"file" : 0,
-				"line" : 13,
+				"line" : 14,
 				"parent" : 0
 			},
 			{
 				"command" : 7,
 				"file" : 0,
-				"line" : 18,
+				"line" : 19,
 				"parent" : 0
 			}
 		]
@@ -140,6 +140,49 @@
 			"sourceIndexes" : 
 			[
 				0
+			]
+		},
+		{
+			"compileCommandFragments" : 
+			[
+				{
+					"fragment" : "-g"
+				}
+			],
+			"defines" : 
+			[
+				{
+					"backtrace" : 12,
+					"define" : "MODEL_DIR=\"/home/tchilakwad/3D_blackhole/resources/models/\""
+				},
+				{
+					"backtrace" : 12,
+					"define" : "SHADER_DIR=\"/home/tchilakwad/3D_blackhole/shaders/\""
+				},
+				{
+					"backtrace" : 12,
+					"define" : "TEXTURE_DIR=\"/home/tchilakwad/3D_blackhole/resources/textures/\""
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 13,
+					"path" : "/home/tchilakwad/3D_blackhole/include"
+				}
+			],
+			"language" : "CXX",
+			"languageStandard" : 
+			{
+				"backtraces" : 
+				[
+					1
+				],
+				"standard" : "17"
+			},
+			"sourceIndexes" : 
+			[
+				1
 			]
 		}
 	],
@@ -182,7 +225,7 @@
 				"role" : "libraries"
 			}
 		],
-		"language" : "C"
+		"language" : "CXX"
 	},
 	"name" : "OpenGLProject",
 	"nameOnDisk" : "OpenGLProject",
@@ -197,7 +240,8 @@
 			"name" : "Source Files",
 			"sourceIndexes" : 
 			[
-				0
+				0,
+				1
 			]
 		}
 	],
@@ -207,6 +251,12 @@
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
 			"path" : "src/glad.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 1,
+			"path" : "src/main.cpp",
 			"sourceGroupIndex" : 0
 		}
 	],
