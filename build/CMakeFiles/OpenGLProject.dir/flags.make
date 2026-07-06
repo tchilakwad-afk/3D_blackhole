@@ -7,11 +7,11 @@ C_DEFINES = -DMODEL_DIR=\"/home/tchilakwad/3D_blackhole/resources/models/\" -DSH
 
 C_INCLUDES = -I/home/tchilakwad/3D_blackhole/include
 
-C_FLAGS = 
+C_FLAGS = -g
 
 CXX_DEFINES = -DMODEL_DIR=\"/home/tchilakwad/3D_blackhole/resources/models/\" -DSHADER_DIR=\"/home/tchilakwad/3D_blackhole/shaders/\" -DTEXTURE_DIR=\"/home/tchilakwad/3D_blackhole/resources/textures/\"
 
 CXX_INCLUDES = -I/home/tchilakwad/3D_blackhole/include
 
-CXX_FLAGS = -std=gnu++17
+CXX_FLAGS = -g -std=gnu++17
 
