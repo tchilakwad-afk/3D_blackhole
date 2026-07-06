@@ -40,13 +40,13 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 26,
+				"line" : 25,
 				"parent" : 0
 			},
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 12,
+				"line" : 11,
 				"parent" : 0
 			},
 			{
@@ -68,7 +68,7 @@
 			{
 				"command" : 3,
 				"file" : 0,
-				"line" : 24,
+				"line" : 23,
 				"parent" : 0
 			},
 			{
@@ -94,13 +94,13 @@
 			{
 				"command" : 6,
 				"file" : 0,
-				"line" : 14,
+				"line" : 13,
 				"parent" : 0
 			},
 			{
 				"command" : 7,
 				"file" : 0,
-				"line" : 19,
+				"line" : 18,
 				"parent" : 0
 			}
 		]
@@ -111,42 +111,7 @@
 			"compileCommandFragments" : 
 			[
 				{
-					"fragment" : "-g"
-				}
-			],
-			"defines" : 
-			[
-				{
-					"backtrace" : 12,
-					"define" : "MODEL_DIR=\"/home/tchilakwad/3D_blackhole/resources/models/\""
-				},
-				{
-					"backtrace" : 12,
-					"define" : "SHADER_DIR=\"/home/tchilakwad/3D_blackhole/shaders/\""
-				},
-				{
-					"backtrace" : 12,
-					"define" : "TEXTURE_DIR=\"/home/tchilakwad/3D_blackhole/resources/textures/\""
-				}
-			],
-			"includes" : 
-			[
-				{
-					"backtrace" : 13,
-					"path" : "/home/tchilakwad/3D_blackhole/include"
-				}
-			],
-			"language" : "C",
-			"sourceIndexes" : 
-			[
-				0
-			]
-		},
-		{
-			"compileCommandFragments" : 
-			[
-				{
-					"fragment" : "-g"
+					"fragment" : "-std=gnu++17"
 				}
 			],
 			"defines" : 
@@ -182,6 +147,36 @@
 			},
 			"sourceIndexes" : 
 			[
+				0,
+				2
+			]
+		},
+		{
+			"defines" : 
+			[
+				{
+					"backtrace" : 12,
+					"define" : "MODEL_DIR=\"/home/tchilakwad/3D_blackhole/resources/models/\""
+				},
+				{
+					"backtrace" : 12,
+					"define" : "SHADER_DIR=\"/home/tchilakwad/3D_blackhole/shaders/\""
+				},
+				{
+					"backtrace" : 12,
+					"define" : "TEXTURE_DIR=\"/home/tchilakwad/3D_blackhole/resources/textures/\""
+				}
+			],
+			"includes" : 
+			[
+				{
+					"backtrace" : 13,
+					"path" : "/home/tchilakwad/3D_blackhole/include"
+				}
+			],
+			"language" : "C",
+			"sourceIndexes" : 
+			[
 				1
 			]
 		}
@@ -191,10 +186,6 @@
 	{
 		"commandFragments" : 
 		[
-			{
-				"fragment" : "-g",
-				"role" : "flags"
-			},
 			{
 				"fragment" : "",
 				"role" : "flags"
@@ -241,7 +232,8 @@
 			"sourceIndexes" : 
 			[
 				0,
-				1
+				1,
+				2
 			]
 		}
 	],
@@ -250,12 +242,18 @@
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 0,
-			"path" : "src/glad.c",
+			"path" : "src/display-objects.cpp",
 			"sourceGroupIndex" : 0
 		},
 		{
 			"backtrace" : 1,
 			"compileGroupIndex" : 1,
+			"path" : "src/glad.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 1,
+			"compileGroupIndex" : 0,
 			"path" : "src/main.cpp",
 			"sourceGroupIndex" : 0
 		}

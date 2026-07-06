@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o"
+  "CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o.d"
   "CMakeFiles/OpenGLProject.dir/src/glad.c.o"
   "CMakeFiles/OpenGLProject.dir/src/glad.c.o.d"
   "CMakeFiles/OpenGLProject.dir/src/main.cpp.o"
