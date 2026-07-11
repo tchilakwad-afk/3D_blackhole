@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/tchilakwad/3D_blackhole/src/glad.c" "CMakeFiles/OpenGLProject.dir/src/glad.c.o" "gcc" "CMakeFiles/OpenGLProject.dir/src/glad.c.o.d"
+  "/home/tchilakwad/3D_blackhole/src/aux.cpp" "CMakeFiles/OpenGLProject.dir/src/aux.cpp.o" "gcc" "CMakeFiles/OpenGLProject.dir/src/aux.cpp.o.d"
   "/home/tchilakwad/3D_blackhole/src/display-objects.cpp" "CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o" "gcc" "CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o.d"
   "/home/tchilakwad/3D_blackhole/src/main.cpp" "CMakeFiles/OpenGLProject.dir/src/main.cpp.o" "gcc" "CMakeFiles/OpenGLProject.dir/src/main.cpp.o.d"
   )

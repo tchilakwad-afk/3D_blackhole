@@ -16,6 +16,8 @@ class Camera{
     bool isDragging;
     double mousePosX;
     double mousePosY;
+    float getFovRadians() { return glm::radians(fov_deg); }
+    float getAspectRatio() {return aspect_ratio; }
 
 
     Camera(glm::vec3 cameraPos, glm::vec3 cameraFront, glm::vec3 cameraUp, float cam_fov_degrees, float cam_aspect_ratio, float cam_min_view_distance, float cam_max_view_distance);
@@ -34,5 +36,6 @@ class Camera{
     float aspect_ratio;
     float min_view_distance;
     float max_view_distance;
+
 };
 

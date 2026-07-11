@@ -3,17 +3,65 @@ layout (local_size_x = 10, local_size_y = 10, local_size_z = 1) in;
 
 layout(rgba32f, binding = 0) uniform image2D imgOutput;
 
-layout (location = 0) uniform float t;                 /** Time */
+uniform vec3 camPos;
+uniform vec3 camFront;
+uniform vec3 camUp;
+uniform vec3 camRight;
+uniform float tanHalfFov;
+uniform float aspect;
 
-void main() {
-    vec4 value = vec4(0.0, 0.0, 0.0, 1.0);
+uniform vec3 sphereCenter0; uniform float sphereRadius0; uniform vec3 sphereColor0;
+uniform vec3 sphereCenter1; uniform float sphereRadius1; uniform vec3 sphereColor1;
+
+bool intersectSphere(vec3 ro, vec3 rd, vec3 center, float radius, out float outT, out vec3 outNormal){
+    vec3 oc = ro - center;
+    float b = dot(oc, rd);
+    float c = dot(oc, oc) - radius * radius;
+    float disc = b * b - c;
+    if(disc < 0.0) return false;
+
+    float sq = sqrt(disc);
+    float t = -b - sq;
+    if(t < 0.001) t = -b + sq;
+    if(t < 0.001) return false;
+
+    outT = t;
+    outNormal = normalize((ro + rd * t) - center);
+    return true;
+}
+
+void main(){
     ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
-    
-    float speed = 100;
-    // the width of the texture
-    float width = 1000;
+    ivec2 texSize = imageSize(imgOutput);
 
-    value.x = mod(float(texelCoord.x) + t * speed, width) / (gl_NumWorkGroups.x * gl_WorkGroupSize.x);
-    value.y = float(texelCoord.y)/(gl_NumWorkGroups.y*gl_WorkGroupSize.y);
-    imageStore(imgOutput, texelCoord, value);
+    vec2 ndc = (vec2(texelCoord) + 0.5) / vec2(texSize) * 2.0 - 1.0;
+    vec3 rayDir = normalize(camFront + camRight*ndc.x*tanHalfFov*aspect + camUp*(-ndc.y)*tanHalfFov);
+    vec3 rayOrigin = camPos;
+
+    bool didHit = false;
+    float closestT = 1e30;
+    vec3 hitNormal = vec3(0.0);
+    vec3 hitColor = vec3(0.0);
+
+    float t; vec3 n;
+
+    if(intersectSphere(rayOrigin, rayDir, sphereCenter0, sphereRadius0, t, n)){
+        if(t < closestT){ closestT = t; hitNormal = n; hitColor = sphereColor0; didHit = true; }
+    }
+    if(intersectSphere(rayOrigin, rayDir, sphereCenter1, sphereRadius1, t, n)){
+        if(t < closestT){ closestT = t; hitNormal = n; hitColor = sphereColor1; didHit = true; }
+    }
+
+    vec3 outColor;
+    if(didHit){
+        vec3 lightDir = normalize(vec3(0.6, 0.8, 0.5));
+        float diff = max(dot(hitNormal, lightDir), 0.0);
+        float ambient = 0.15;
+        outColor = hitColor * (ambient + diff * 0.85);
+    } else {
+        float sky = 0.5 * (rayDir.y + 1.0);
+        outColor = mix(vec3(1.0), vec3(0.5, 0.7, 1.0), sky);
+    }
+
+    imageStore(imgOutput, texelCoord, vec4(outColor, 1.0));
 }

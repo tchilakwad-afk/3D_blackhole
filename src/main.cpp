@@ -4,10 +4,12 @@
 #include<glm/glm.hpp>
 #include<glm/gtc/matrix_transform.hpp>
 #include<glm/gtc/type_ptr.hpp>
+using namespace glm;
 
 #include<iostream>
 using namespace std;
 
+#include "aux.hpp"
 #include "constants.hpp"
 #include "display-objects.hpp"
 #include "shaders.hpp"
@@ -20,6 +22,19 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 int main(int argc, char* argv[]){
+
+    vec3 cameraPos = vec3(0.0f, 0.0f, 3.0f);
+    vec3 cameraFront = vec3(0.0f, 0.0f, -1.0f);
+    vec3 cameraUp = vec3(0.0f, 1.0f, 0.0f);
+    float fov = 45.0f;
+    float AR = (float)SCREEN_WIDTH / (float)SCREEN_HEIGHT;
+    float min_view_dist = 0.1f;
+    float max_view_dist = 100.f;
+
+    Camera cam(cameraPos, cameraFront, cameraUp, fov, AR, min_view_dist, max_view_dist);
+
+
+
     glfwInit();
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
@@ -87,7 +102,24 @@ int main(int argc, char* argv[]){
         }
 
         computeShader.use();
-        computeShader.setFloat("t", currentFrame);
+        // computeShader.setFloat("t", currentFrame);
+
+        computeShader.use();
+        computeShader.setVec3("camPos", cam.pos);
+        computeShader.setVec3("camFront", cam.front);
+        computeShader.setVec3("camUp", cam.up);
+        computeShader.setVec3("camRight", cam.right);
+        computeShader.setFloat("tanHalfFov", tanf(cam.getFovRadians() * 0.5f));
+        computeShader.setFloat("aspect", cam.getAspectRatio());
+
+        computeShader.setVec3("sphereCenter0", vec3(0.0f, 0.0f, -5.0f));
+        computeShader.setFloat("sphereRadius0", 1.0f);
+        computeShader.setVec3("sphereColor0", vec3(0.9f, 0.2f, 0.2f));
+
+        computeShader.setVec3("sphereCenter1", vec3(2.0f, 0.5f, -6.0f));
+        computeShader.setFloat("sphereRadius1", 1.5f);
+        computeShader.setVec3("sphereColor1", vec3(0.2f, 0.4f, 0.9f));
+        
         glDispatchCompute((unsigned int)TEXTURE_WIDTH/10, (unsigned int)TEXTURE_HEIGHT/10, 1);
 
         glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);

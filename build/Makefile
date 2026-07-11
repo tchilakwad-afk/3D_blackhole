@@ -129,6 +129,30 @@ OpenGLProject/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLProject.dir/build.make CMakeFiles/OpenGLProject.dir/build
 .PHONY : OpenGLProject/fast
 
+src/aux.o: src/aux.cpp.o
+.PHONY : src/aux.o
+
+# target to build an object file
+src/aux.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLProject.dir/build.make CMakeFiles/OpenGLProject.dir/src/aux.cpp.o
+.PHONY : src/aux.cpp.o
+
+src/aux.i: src/aux.cpp.i
+.PHONY : src/aux.i
+
+# target to preprocess a source file
+src/aux.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLProject.dir/build.make CMakeFiles/OpenGLProject.dir/src/aux.cpp.i
+.PHONY : src/aux.cpp.i
+
+src/aux.s: src/aux.cpp.s
+.PHONY : src/aux.s
+
+# target to generate assembly for a file
+src/aux.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/OpenGLProject.dir/build.make CMakeFiles/OpenGLProject.dir/src/aux.cpp.s
+.PHONY : src/aux.cpp.s
+
 src/display-objects.o: src/display-objects.cpp.o
 .PHONY : src/display-objects.o
 
@@ -210,6 +234,9 @@ help:
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... OpenGLProject"
+	@echo "... src/aux.o"
+	@echo "... src/aux.i"
+	@echo "... src/aux.s"
 	@echo "... src/display-objects.o"
 	@echo "... src/display-objects.i"
 	@echo "... src/display-objects.s"

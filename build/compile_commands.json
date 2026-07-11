@@ -1,6 +1,12 @@
 [
 {
   "directory": "/home/tchilakwad/3D_blackhole/build",
+  "command": "/usr/bin/g++ -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -g -std=gnu++17 -o CMakeFiles/OpenGLProject.dir/src/aux.cpp.o -c /home/tchilakwad/3D_blackhole/src/aux.cpp",
+  "file": "/home/tchilakwad/3D_blackhole/src/aux.cpp",
+  "output": "CMakeFiles/OpenGLProject.dir/src/aux.cpp.o"
+},
+{
+  "directory": "/home/tchilakwad/3D_blackhole/build",
   "command": "/usr/bin/g++ -DMODEL_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/models/\\\" -DSHADER_DIR=\\\"/home/tchilakwad/3D_blackhole/shaders/\\\" -DTEXTURE_DIR=\\\"/home/tchilakwad/3D_blackhole/resources/textures/\\\" -I/home/tchilakwad/3D_blackhole/include -g -std=gnu++17 -o CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o -c /home/tchilakwad/3D_blackhole/src/display-objects.cpp",
   "file": "/home/tchilakwad/3D_blackhole/src/display-objects.cpp",
   "output": "CMakeFiles/OpenGLProject.dir/src/display-objects.cpp.o"
