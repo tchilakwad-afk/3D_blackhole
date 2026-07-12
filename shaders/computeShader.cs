@@ -18,7 +18,19 @@ uniform int maxSteps;
 uniform float maxDist;
 
 bool intersectSphere(vec3 ro, vec3 rd, vec3 center, float radius, out float outT, out vec3 outNormal){
+    vec3 oc = center - ro;
+    float tClosest = dot(oc, rd);
+    vec3 closestPoint = ro + rd*max(tClosest, 0.0);
+    float minDist = length(closestPoint - center);
+    if(minDist > radius + stepSize){
+        return false;
+    }
+    if(tClosest < 0.0 && length(oc) > radius){
+        return false;
+    }
+    
     float t = 0.0;
+    float prevDist = length(ro - center);
     
     for(int i = 0; i < maxSteps; i++){
         vec3 p = ro + rd*t;
@@ -39,6 +51,11 @@ bool intersectSphere(vec3 ro, vec3 rd, vec3 center, float radius, out float outT
             outNormal = normalize((ro + rd * outT) - center);
             return true;
         }
+
+        if(distToCenter > prevDist && distToCenter > radius*3.0)
+            break;
+        prevDist = distToCenter;
+
         t += stepSize;
         if(t > maxDist)
             break;

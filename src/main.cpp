@@ -121,8 +121,8 @@ int main(int argc, char* argv[]){
         computeShader.setVec3("sphereColor1", vec3(0.2f, 0.4f, 0.9f));
 
         computeShader.setFloat("stepSize", 0.05f);
-        computeShader.setInt("maxSteps", 500);
-        computeShader.setFloat("maxDist", 100.0f);
+        computeShader.setInt("maxSteps", 200);
+        computeShader.setFloat("maxDist", 15.0f);
         
         glDispatchCompute((unsigned int)TEXTURE_WIDTH/10, (unsigned int)TEXTURE_HEIGHT/10, 1);
 
