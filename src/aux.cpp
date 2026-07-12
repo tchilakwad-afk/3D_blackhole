@@ -20,6 +20,8 @@
 #include <assimp/scene.h>
 #include <assimp/postprocess.h>
 
+using namespace std;
+
 
 void processInput(GLFWwindow *window, Camera& camera, float ds)
 {
@@ -164,4 +166,32 @@ unsigned int readTextureFromFile(std::string filepath, int& width, int& height, 
     stbi_image_free(data);
     return texture;
 
+}
+
+unsigned int loadCubemap(vector<string> faces){
+    unsigned int textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, textureID);
+
+    stbi_set_flip_vertically_on_load(false);
+
+    int width, height, nChannels;
+    for(unsigned int i = 0; i < faces.size(); i++){
+        unsigned char *data = stbi_load(faces[i].c_str(), &width, &height, &nChannels, 0);
+        if(data){
+            GLenum format = (nChannels == 4) ? GL_RGBA : GL_RGB;
+            glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+            stbi_image_free(data);
+        }
+        else{
+            cout << "ERROR :: CUBEMAP_LOAD :: FILEPATH:" << faces[i] << endl;
+        }
+    }
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
+
+    return textureID;
 }

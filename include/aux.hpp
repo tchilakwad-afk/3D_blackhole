@@ -5,6 +5,7 @@
 
 #include <string>
 #include <random>
+#include <vector>
 
 #include "display-objects.hpp"
 
@@ -26,7 +27,7 @@ void cursorPosCallback(GLFWwindow* window, double xpos, double ypos);
 inline float randFloat(const glm::vec2& bounds){
     return bounds.x + ((rand()*1.0f)/(RAND_MAX))*(bounds.y - bounds.x);
 }
-
+unsigned int loadCubemap(std::vector<std::string> faces);
 
 GLFWwindow* setupWindow(Camera &cam, int width, int height);
 std::string readSourceFromFile(const std::string& filepath);

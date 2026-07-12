@@ -33,27 +33,28 @@ int main(int argc, char* argv[]){
 
     Camera cam(cameraPos, cameraFront, cameraUp, fov, AR, min_view_dist, max_view_dist);
 
+    // glfwInit();
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
+    // GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL", NULL, NULL);
+    // if(window == NULL){
+    //     cout << "Failed to create GLFW window" << endl;
+    //     glfwTerminate();
+    //     return -1;
+    // }
+    // glfwMakeContextCurrent(window);
+    // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    // glfwSwapInterval(0);
 
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    // if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
+    //     cout << "Failed to initialise GLAD" << endl;
+    //     return -1;
+    // }
 
-    GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL", NULL, NULL);
-    if(window == NULL){
-        cout << "Failed to create GLFW window" << endl;
-        glfwTerminate();
-        return -1;
-    }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    GLFWwindow* window = setupWindow(cam, SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSwapInterval(0);
-
-    if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-        cout << "Failed to initialise GLAD" << endl;
-        return -1;
-    }
 
     int max_compute_work_group_count[3];
     int max_compute_work_group_size[3];
@@ -88,11 +89,32 @@ int main(int argc, char* argv[]){
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture);
 
+    vector<string> faces = {
+        (string)(TEXTURE_DIR) + "blue/right.png",
+        (string)(TEXTURE_DIR) + "blue/left.png",
+        (string)(TEXTURE_DIR) + "blue/top.png",
+        (string)(TEXTURE_DIR) + "blue/bottom.png",
+        (string)(TEXTURE_DIR) + "blue/front.png",
+        (string)(TEXTURE_DIR) + "blue/back.png"
+    };
+
+    unsigned int cubemapTexture = loadCubemap(faces);
+
+    glActiveTexture(GL_TEXTURE1);
+    glBindTexture(GL_TEXTURE_CUBE_MAP, cubemapTexture);
+    computeShader.use();
+    computeShader.setInt("skybox", 1);
+    
     int fCounter = 0;
+
     while(!glfwWindowShouldClose(window)){
+
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+
+        processInput(window, cam, deltaTime*KEYBOARD_MOVE_SPEED);
+        
         if(fCounter > 20){
             cout << "FPS: " << 1 / deltaTime << endl;
             fCounter = 0;

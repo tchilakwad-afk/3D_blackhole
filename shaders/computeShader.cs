@@ -17,6 +17,8 @@ uniform float stepSize;
 uniform int maxSteps;
 uniform float maxDist;
 
+uniform samplerCube skybox;
+
 bool intersectSphere(vec3 ro, vec3 rd, vec3 center, float radius, out float outT, out vec3 outNormal){
     vec3 oc = center - ro;
     float tClosest = dot(oc, rd);
@@ -91,9 +93,9 @@ void main(){
         float diff = max(dot(hitNormal, lightDir), 0.0);
         float ambient = 0.15;
         outColor = hitColor * (ambient + diff * 0.85);
-    } else {
-        float sky = 0.5 * (rayDir.y + 1.0);
-        outColor = mix(vec3(1.0), vec3(0.5, 0.7, 1.0), sky);
+    } 
+    else {
+        outColor = texture(skybox, rayDir).rgb;
     }
 
     imageStore(imgOutput, texelCoord, vec4(outColor, 1.0));
