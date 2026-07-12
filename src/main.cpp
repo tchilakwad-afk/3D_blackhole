@@ -93,7 +93,7 @@ int main(int argc, char* argv[]){
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        if(fCounter > 500){
+        if(fCounter > 20){
             cout << "FPS: " << 1 / deltaTime << endl;
             fCounter = 0;
         }
@@ -119,6 +119,10 @@ int main(int argc, char* argv[]){
         computeShader.setVec3("sphereCenter1", vec3(2.0f, 0.5f, -6.0f));
         computeShader.setFloat("sphereRadius1", 1.5f);
         computeShader.setVec3("sphereColor1", vec3(0.2f, 0.4f, 0.9f));
+
+        computeShader.setFloat("stepSize", 0.05f);
+        computeShader.setInt("maxSteps", 500);
+        computeShader.setFloat("maxDist", 100.0f);
         
         glDispatchCompute((unsigned int)TEXTURE_WIDTH/10, (unsigned int)TEXTURE_HEIGHT/10, 1);
 

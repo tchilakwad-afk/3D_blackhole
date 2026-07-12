@@ -13,21 +13,37 @@ uniform float aspect;
 uniform vec3 sphereCenter0; uniform float sphereRadius0; uniform vec3 sphereColor0;
 uniform vec3 sphereCenter1; uniform float sphereRadius1; uniform vec3 sphereColor1;
 
+uniform float stepSize;
+uniform int maxSteps;
+uniform float maxDist;
+
 bool intersectSphere(vec3 ro, vec3 rd, vec3 center, float radius, out float outT, out vec3 outNormal){
-    vec3 oc = ro - center;
-    float b = dot(oc, rd);
-    float c = dot(oc, oc) - radius * radius;
-    float disc = b * b - c;
-    if(disc < 0.0) return false;
+    float t = 0.0;
+    
+    for(int i = 0; i < maxSteps; i++){
+        vec3 p = ro + rd*t;
+        float distToCenter = length(p - center);
 
-    float sq = sqrt(disc);
-    float t = -b - sq;
-    if(t < 0.001) t = -b + sq;
-    if(t < 0.001) return false;
-
-    outT = t;
-    outNormal = normalize((ro + rd * t) - center);
-    return true;
+        if(distToCenter <= radius){
+            float tLo = t - stepSize;
+            float tHi = t;
+            for(int j = 0; j < 8; j++){
+                float tMid = 0.5*(tLo + tHi);
+                vec3 pMid = ro + rd*tMid;
+                if(length(pMid - center) <= radius)
+                    tHi = tMid;
+                else
+                    tLo = tMid;
+            }
+            outT = tHi;
+            outNormal = normalize((ro + rd * outT) - center);
+            return true;
+        }
+        t += stepSize;
+        if(t > maxDist)
+            break;
+    }
+    return false;
 }
 
 void main(){
