@@ -7,7 +7,8 @@ set(CMAKE_CXX_STANDARD 17)
 file(GLOB_RECURSE SOURCES "src/*.cpp" "src/glad.c")
 
 add_executable(${PROJECT_NAME} ${SOURCES}
-    include/aux.hpp)
+    include/aux.hpp
+    include/physics.hpp)
 
 find_package(OpenGL REQUIRED)
 find_package(glfw3 3.3 REQUIRED)

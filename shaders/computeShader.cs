@@ -10,8 +10,14 @@ uniform vec3 camRight;
 uniform float tanHalfFov;
 uniform float aspect;
 
-uniform vec3 sphereCenter0; uniform float sphereRadius0; uniform vec3 sphereColor0;
-uniform vec3 sphereCenter1; uniform float sphereRadius1; uniform vec3 sphereColor1;
+// uniform vec3 sphereCenter0; uniform float sphereRadius0; uniform vec3 sphereColor0;
+// uniform vec3 sphereCenter1; uniform float sphereRadius1; uniform vec3 sphereColor1;
+
+uniform vec3 BHCenter;
+uniform float BHrs;
+uniform float BHrFar;
+uniform float dLambda;
+uniform int maxGeodesicSteps;
 
 uniform float stepSize;
 uniform int maxSteps;
@@ -65,6 +71,85 @@ bool intersectSphere(vec3 ro, vec3 rd, vec3 center, float radius, out float outT
     return false;
 }
 
+void geodesicRHS(float r, float theta, float dt, float dr, float dtheta, float dphi, out float d2t, out float d2r, out float d2theta, out float d2phi){
+    float f = 1.0 - BHrs / r;
+    float sinTheta = max(sin(theta), 1e-4);
+    float cosTheta = cos(theta);
+
+    d2t = -(BHrs / (r*r*f) * dt * dr);
+
+    d2r = -(BHrs*f/(2.0*r*r)*dt*dt) + (BHrs/(2.0*r*r*f)*dr*dr) + r*f*dtheta*dtheta + r*f*sinTheta*sinTheta*dphi*dphi;
+
+    d2theta = -(2.0/r)*dr*dtheta + sinTheta*cosTheta*dphi*dphi;
+
+    d2phi = -(2.0/r)*dr*dphi - 2.0*(cosTheta/sinTheta)*dtheta*dphi;
+}
+
+void rk4Step(inout float r, inout float theta, inout float phi, inout float dr, inout float dtheta, inout float dphi, inout float dt, float h){
+    float r0=r, th0=theta, ph0=phi, dr0=dr, dth0=dtheta, dph0=dphi, dt0=dt;
+
+    float k1t, k1r, k1th, k1ph;
+    geodesicRHS(r0, th0, dt0, dr0, dth0, dph0, k1t, k1r, k1th, k1ph);
+
+    float r1=r0+0.5*h*dr0, th1=th0+0.5*h*dth0, ph1=ph0+0.5*h*dph0;
+    float dr1=dr0+0.5*h*k1r, dth1=dth0+0.5*h*k1th, dph1=dph0+0.5*h*k1ph, dt1=dt0+0.5*h*k1t;
+    float k2t,k2r,k2th,k2ph;
+    geodesicRHS(r1, th1, dt1, dr1, dth1, dph1, k2t, k2r, k2th, k2ph);
+
+    float r2=r0+0.5*h*dr1, th2=th0+0.5*h*dth1, ph2=ph0+0.5*h*dph1;
+    float dr2=dr0+0.5*h*k2r, dth2=dth0+0.5*h*k2th, dph2=dph0+0.5*h*k2ph, dt2=dt0+0.5*h*k2t;
+    float k3t, k3r, k3th, k3ph;
+    geodesicRHS(r2, th2, dt2, dr2, dth2, dph2, k3t, k3r, k3th, k3ph);
+
+    float r3=r0+h*dr2, th3=th0+h*dth2, ph3=ph0+h*dph2;
+    float dr3=dr0+h*k3r, dth3=dth0+h*k3th, dph3=dph0+h*k3ph, dt3=dt0+h*k3t;
+    float k4t, k4r, k4th, k4ph;
+    geodesicRHS(r3, th3, dt3, dr3, dth3, dph3, k4t, k4r, k4th, k4ph);
+
+    r = r0 + (h/6.0)*(dr0 + 2.0*dr1 + 2.0*dr2 + dr3);
+    theta = th0 + (h/6.0)*(dth0 + 2.0*dth1 + 2.0*dth2 + dth3);
+    phi = ph0 + (h/6.0)*(dph0 + 2.0*dph1 + 2.0*dph2 + dph3);
+
+    dr = dr0 + (h/6.0)*(k1r + 2.0*k2r + 2.0*k3r + k4r);
+    dtheta = dth0 + (h/6.0)*(k1th + 2.0*k2th + 2.0*k3th + k4th);
+    dphi = dph0 + (h/6.0)*(k1ph + 2.0*k2ph + 2.0*k3ph + k4ph);
+    dt = dt0 + (h/6.0)*(k1t + 2.0*k2t  + 2.0*k3t  + k4t);
+}
+
+bool traceGeodesicRay(vec3 ro, vec3 rd, out vec3 escapeDir){
+    vec3 relPos = ro - BHCenter;
+    float r = length(relPos);
+    float theta = acos(clamp(relPos.y/r, -1.0, 1.0));
+    float phi = atan(relPos.z, relPos.x);
+    float sinTheta = max(sin(theta), 1e-4);
+
+    vec3 eR = vec3(sin(theta)*cos(phi), cos(theta), sin(theta)*sin(phi));
+    vec3 eTheta = vec3(cos(theta)*cos(phi), -sin(theta), cos(theta)*sin(phi));
+    vec3 ePhi = vec3(-sin(phi), 0.0, cos(phi));
+
+    float dr = dot(rd, eR);
+    float dtheta = dot(rd, eTheta) / r;
+    float dphi = dot(rd, ePhi) / (r*sinTheta);
+    float f0 = 1.0 - BHrs / r;
+    float dt = sqrt(max((dr*dr/f0 + r*r*dtheta*dtheta + r*r*sinTheta*sinTheta*dphi*dphi) / f0, 0.0));
+
+    for(int i = 0; i < maxGeodesicSteps; i++){
+        if(r <= BHrs) return false;
+        if(r >= BHrFar){
+            float st = sin(theta), ct = cos(theta), sp = sin(phi), cp = cos(phi);
+            vec3 curEr = vec3(st*cp, ct, st*sp);
+            vec3 curEtheta = vec3(ct*cp, -st, ct*sp);
+            vec3 curEphi = vec3(-sp, 0.0, cp);
+            escapeDir = normalize(dr*curEr + r*dtheta*curEtheta + r*st*dphi*curEphi);
+            return true;
+        }
+        rk4Step(r, theta, phi, dr, dtheta, dphi, dt, dLambda);
+    }
+    float st = sin(theta), ct = cos(theta), sp = sin(phi), cp = cos(phi);
+    escapeDir = normalize(dr*vec3(st*cp, ct, st*sp) + r*dtheta*vec3(ct*cp, -st, ct*sp) + r*st*dphi*vec3(-sp, 0.0, cp));
+    return true;
+}
+
 void main(){
     ivec2 texelCoord = ivec2(gl_GlobalInvocationID.xy);
     ivec2 texSize = imageSize(imgOutput);
@@ -73,30 +158,36 @@ void main(){
     vec3 rayDir = normalize(camFront + camRight*ndc.x*tanHalfFov*aspect + camUp*(-ndc.y)*tanHalfFov);
     vec3 rayOrigin = camPos;
 
-    bool didHit = false;
-    float closestT = 1e30;
-    vec3 hitNormal = vec3(0.0);
-    vec3 hitColor = vec3(0.0);
+    // bool didHit = false;
+    // float closestT = 1e30;
+    // vec3 hitNormal = vec3(0.0);
+    // vec3 hitColor = vec3(0.0);
 
-    float t; vec3 n;
+    // float t; vec3 n;
 
-    if(intersectSphere(rayOrigin, rayDir, sphereCenter0, sphereRadius0, t, n)){
-        if(t < closestT){ closestT = t; hitNormal = n; hitColor = sphereColor0; didHit = true; }
-    }
-    if(intersectSphere(rayOrigin, rayDir, sphereCenter1, sphereRadius1, t, n)){
-        if(t < closestT){ closestT = t; hitNormal = n; hitColor = sphereColor1; didHit = true; }
-    }
+    // if(intersectSphere(rayOrigin, rayDir, sphereCenter0, sphereRadius0, t, n)){
+    //     if(t < closestT){ closestT = t; hitNormal = n; hitColor = sphereColor0; didHit = true; }
+    // }
+    // if(intersectSphere(rayOrigin, rayDir, sphereCenter1, sphereRadius1, t, n)){
+    //     if(t < closestT){ closestT = t; hitNormal = n; hitColor = sphereColor1; didHit = true; }
+    // }
+    
 
-    vec3 outColor;
-    if(didHit){
-        vec3 lightDir = normalize(vec3(0.6, 0.8, 0.5));
-        float diff = max(dot(hitNormal, lightDir), 0.0);
-        float ambient = 0.15;
-        outColor = hitColor * (ambient + diff * 0.85);
-    } 
-    else {
-        outColor = texture(skybox, rayDir).rgb;
-    }
+    // vec3 outColor;
+    // if(didHit){
+    //     vec3 lightDir = normalize(vec3(0.6, 0.8, 0.5));
+    //     float diff = max(dot(hitNormal, lightDir), 0.0);
+    //     float ambient = 0.15;
+    //     outColor = hitColor * (ambient + diff * 0.85);
+    // } 
+    // else {
+    //     outColor = texture(skybox, rayDir).rgb;
+    // }
+
+    vec3 escapeDir;
+    bool escaped = traceGeodesicRay(rayOrigin, rayDir, escapeDir);
+    vec3 outColor = escaped ? texture(skybox, escapeDir).rgb : vec3(0.0);
 
     imageStore(imgOutput, texelCoord, vec4(outColor, 1.0));
+
 }

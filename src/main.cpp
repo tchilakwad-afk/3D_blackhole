@@ -12,6 +12,7 @@ using namespace std;
 #include "aux.hpp"
 #include "constants.hpp"
 #include "display-objects.hpp"
+// #include "physics.hpp"
 #include "shaders.hpp"
 #include "stb_image.h"
 
@@ -32,26 +33,6 @@ int main(int argc, char* argv[]){
     float max_view_dist = 100.f;
 
     Camera cam(cameraPos, cameraFront, cameraUp, fov, AR, min_view_dist, max_view_dist);
-
-    // glfwInit();
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    // glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-    // glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-    // GLFWwindow* window = glfwCreateWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "OpenGL", NULL, NULL);
-    // if(window == NULL){
-    //     cout << "Failed to create GLFW window" << endl;
-    //     glfwTerminate();
-    //     return -1;
-    // }
-    // glfwMakeContextCurrent(window);
-    // glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-    // glfwSwapInterval(0);
-
-    // if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)){
-    //     cout << "Failed to initialise GLAD" << endl;
-    //     return -1;
-    // }
 
     GLFWwindow* window = setupWindow(cam, SCREEN_WIDTH, SCREEN_HEIGHT);
     glfwSwapInterval(0);
@@ -90,12 +71,12 @@ int main(int argc, char* argv[]){
     glBindTexture(GL_TEXTURE_2D, texture);
 
     vector<string> faces = {
-        (string)(TEXTURE_DIR) + "blue/right.png",
-        (string)(TEXTURE_DIR) + "blue/left.png",
-        (string)(TEXTURE_DIR) + "blue/top.png",
-        (string)(TEXTURE_DIR) + "blue/bottom.png",
-        (string)(TEXTURE_DIR) + "blue/front.png",
-        (string)(TEXTURE_DIR) + "blue/back.png"
+        (string)(TEXTURE_DIR) + "lightblue/right.png",
+        (string)(TEXTURE_DIR) + "lightblue/left.png",
+        (string)(TEXTURE_DIR) + "lightblue/top.png",
+        (string)(TEXTURE_DIR) + "lightblue/bottom.png",
+        (string)(TEXTURE_DIR) + "lightblue/front.png",
+        (string)(TEXTURE_DIR) + "lightblue/back.png"
     };
 
     unsigned int cubemapTexture = loadCubemap(faces);
@@ -134,17 +115,23 @@ int main(int argc, char* argv[]){
         computeShader.setFloat("tanHalfFov", tanf(cam.getFovRadians() * 0.5f));
         computeShader.setFloat("aspect", cam.getAspectRatio());
 
-        computeShader.setVec3("sphereCenter0", vec3(0.0f, 0.0f, -5.0f));
-        computeShader.setFloat("sphereRadius0", 1.0f);
-        computeShader.setVec3("sphereColor0", vec3(0.9f, 0.2f, 0.2f));
+        // computeShader.setVec3("sphereCenter0", vec3(0.0f, 0.0f, -5.0f));
+        // computeShader.setFloat("sphereRadius0", 1.0f);
+        // computeShader.setVec3("sphereColor0", vec3(0.9f, 0.2f, 0.2f));
 
-        computeShader.setVec3("sphereCenter1", vec3(2.0f, 0.5f, -6.0f));
-        computeShader.setFloat("sphereRadius1", 1.5f);
-        computeShader.setVec3("sphereColor1", vec3(0.2f, 0.4f, 0.9f));
+        // computeShader.setVec3("sphereCenter1", vec3(2.0f, 0.5f, -6.0f));
+        // computeShader.setFloat("sphereRadius1", 1.5f);
+        // computeShader.setVec3("sphereColor1", vec3(0.2f, 0.4f, 0.9f));
 
-        computeShader.setFloat("stepSize", 0.05f);
-        computeShader.setInt("maxSteps", 200);
-        computeShader.setFloat("maxDist", 15.0f);
+        // computeShader.setFloat("stepSize", 0.05f);
+        // computeShader.setInt("maxSteps", 200);
+        // computeShader.setFloat("maxDist", 15.0f);
+
+        computeShader.setVec3("BHCenter", vec3(0.0f, 1.0f, 0.0f));
+        computeShader.setFloat("BHrs", 0.5f);
+        computeShader.setFloat("BHrFar", 4.0f);
+        computeShader.setFloat("dLambda", 0.02f);
+        computeShader.setInt("maxGeodesicSteps", 500);
         
         glDispatchCompute((unsigned int)TEXTURE_WIDTH/10, (unsigned int)TEXTURE_HEIGHT/10, 1);
 
