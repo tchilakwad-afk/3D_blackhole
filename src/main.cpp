@@ -127,11 +127,15 @@ int main(int argc, char* argv[]){
         // computeShader.setInt("maxSteps", 200);
         // computeShader.setFloat("maxDist", 15.0f);
 
-        computeShader.setVec3("BHCenter", vec3(0.0f, 1.0f, 0.0f));
+        computeShader.setVec3("BHCenter", vec3(0.0f, 0.0f, -10.0f));
         computeShader.setFloat("BHrs", 0.5f);
-        computeShader.setFloat("BHrFar", 4.0f);
+        computeShader.setFloat("BHrFar", 30.0f);
         computeShader.setFloat("dLambda", 0.02f);
-        computeShader.setInt("maxGeodesicSteps", 500);
+        computeShader.setInt("maxGeodesicSteps", 150);
+
+        computeShader.setFloat("rkfTolerance", 1e-4f);
+        computeShader.setFloat("hMin", 1e-5f);
+        computeShader.setFloat("hMax", 0.5f);
         
         glDispatchCompute((unsigned int)TEXTURE_WIDTH/10, (unsigned int)TEXTURE_HEIGHT/10, 1);
 
