@@ -225,7 +225,7 @@ bool traceGeodesicRay(vec3 ro, vec3 rd, out vec3 escapeDir){
     float h = dLambda;
 
     for(int i = 0; i < maxGeodesicSteps; i++){
-        if(y[0] <= BHrs) return false;
+        if(y[0] <= BHrs*1.01) return false;
         if(y[0] >= BHrFar){
             float st = sin(y[1]), ct = cos(y[1]), sp = sin(y[2]), cp = cos(y[2]);
             vec3 curEr = vec3(st*cp, ct, st*sp);
@@ -251,7 +251,7 @@ bool traceGeodesicRay(vec3 ro, vec3 rd, out vec3 escapeDir){
     }
     float st = sin(y[1]), ct = cos(y[1]), sp = sin(y[2]), cp = cos(y[2]);
     escapeDir = normalize(y[3]*vec3(st*cp, ct, st*sp) + y[0]*y[4]*vec3(ct*cp, -st, ct*sp) + y[0]*st*y[5]*vec3(-sp, 0.0, cp));
-    return true;
+    return false;
 }
 
 void main(){
